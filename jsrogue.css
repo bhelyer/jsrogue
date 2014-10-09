@@ -1,0 +1,19 @@
+body {
+	background-color: #333333;
+	color: #D6D6D6;
+	font-family: monospace;
+}
+
+a {
+	color: inherit;
+	text-decoration: underline;
+	cursor: pointer
+}
+
+div {
+	margin: 2%;
+}
+
+div.log {
+	background-color: #474747;
+}
