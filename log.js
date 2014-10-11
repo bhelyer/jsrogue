@@ -8,12 +8,19 @@ var Log = {
 }
 
 Log.draw = function() {
-	str = "<div class=\"log\">"
+	var str = "<div class=\"log\">"
 	for (var i = Log.messages.length - (Log.display_height + 1); i < Log.messages.length; i++) {
+		var last = i === Log.messages.length - 1;
+		if (last) {
+			str += "<span class=\"mostrecentlog\">";
+		}
 		if (i < 0) {
 			str += "<br>";
 		} else {
 			str += MessageStrings.get(Log.messages[i]) + "<br>";
+		}
+		if (last) {
+			str += "</span>";
 		}
 	}
 	document.getElementById("content").innerHTML += str;

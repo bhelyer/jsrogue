@@ -1,6 +1,6 @@
 body {
 	background-color: #333333;
-	color: #D6D6D6;
+	color: #B5B5B5;
 	font-family: monospace;
 }
 
@@ -16,4 +16,14 @@ div {
 
 div.log {
 	background-color: #474747;
+}
+
+span.mostrecentlog {
+	color: white;
+	font-weight: bold;
+}
+
+span.player {
+	color: white;
+	font-weight: bold;
 }

@@ -3,8 +3,8 @@ var Game = {
 }
 
 Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
-Game.dungeon.tileAt(0, 0).creature = new Creature("player");
-Game.playerTile = Game.dungeon.tileAt(0, 0);
+Game.playerTile = Game.dungeon.getEmptyTile();
+Game.playerTile.creature = new Creature("player");
 
 Game.update = function() {
 }
@@ -29,6 +29,10 @@ function moveCreature(floor, fromTile, xMove, yMove) {
 	if (toTile.creature != null) {
 		// attack code goes here
 		throw new Error("moveCreature(): implement attack.");
+	}
+	if (!TileAttrs[toTile.tilename].walkable) {
+		Log.add(MSG_NO_WALK);
+		return fromTile;
 	}
 	toTile.creature = fromTile.creature;
 	fromTile.creature = null;

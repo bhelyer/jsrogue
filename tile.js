@@ -3,7 +3,8 @@
  * Colours are handled in the CSS.
  */
 var TileAttrs = {
-	floor: { walkable:true, transparent: true, c: "." }
+	floor: { walkable:true, transparent: true, c: "." },
+	wall: { walkable:false, transparent: false, c: "#" }
 }
 
 function Tile(tilename, x, y) {
