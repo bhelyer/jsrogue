@@ -187,6 +187,9 @@ function simpleDungeonGenerator() {
 	while (featuresToAdd > 0) {
 		featuresToAdd -= digFeature();
 	}
+
+	var t = this.getEmptyTile();
+	t.tilename = "stairsup";
 }
 
 function dungeonDraw() {
@@ -216,7 +219,7 @@ function dungeonDraw() {
 		s += "</span><br>";
 		lastname = "";
 	}
-	document.getElementById("content").innerHTML += s;
+	document.getElementById("dungeon").innerHTML = s;
 }
 
 function dungeonTileAt(x, y) {

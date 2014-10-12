@@ -14,8 +14,17 @@ div {
 	margin: 2%;
 }
 
-div.log {
+div#log {
 	background-color: #474747;
+}
+
+div#dungeon {
+	float: left;
+}
+
+div#status {
+	position: fixed;
+	bottom: 0;
 }
 
 span.mostrecentlog {
@@ -24,6 +33,16 @@ span.mostrecentlog {
 }
 
 span.player {
+	color: white;
+	font-weight: bold;
+}
+
+span.stairsup {
+	color: white;
+	font-weight: bold;
+}
+
+span.unit {
 	color: white;
 	font-weight: bold;
 }

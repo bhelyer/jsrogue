@@ -1,5 +1,6 @@
 var Game = {
 	fps:12,
+	floor:0
 }
 
 Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
@@ -10,9 +11,10 @@ Game.update = function() {
 }
 
 Game.draw = function() {
-	document.getElementById("content").innerHTML = "";
+	MessageStrings.drawOptions();
 	Log.draw();
 	Game.dungeon.draw();
+	document.getElementById("status").innerHTML = MessageStrings.getStatus(this.floor);
 }
 
 function moveCreature(floor, fromTile, xMove, yMove) {
@@ -56,3 +58,6 @@ Game.run = function() {
 
 Game._intervalId = setInterval(Game.run, 1000 / Game.fps);
 document.addEventListener("keydown", Game.input);
+if (getQueryParams(document.location.search).lang == "japanese") {
+	MessageStrings.toggleLanguage();
+}

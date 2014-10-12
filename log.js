@@ -23,7 +23,7 @@ Log.draw = function() {
 			str += "</span>";
 		}
 	}
-	document.getElementById("content").innerHTML += str;
+	document.getElementById("log").innerHTML = str;
 }
 
 Log.add = function(msg) {

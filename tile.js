@@ -4,7 +4,8 @@
  */
 var TileAttrs = {
 	floor: { walkable:true, transparent: true, c: "." },
-	wall: { walkable:false, transparent: false, c: "#" }
+	wall: { walkable:false, transparent: false, c: "#" },
+	stairsup: { walkable:true, transparent: true, c: "<" }
 }
 
 function Tile(tilename, x, y) {
