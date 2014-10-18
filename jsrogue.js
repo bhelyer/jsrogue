@@ -1,13 +1,74 @@
 var Game = {
 	fps:12,
-	floor:0
+	floor:0,
+	info:MSG_INTRO
 }
 
 Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
-Game.playerTile = Game.dungeon.getEmptyTile();
-Game.playerTile.creature = new Creature("player");
+Game.player = new Creature("player");
+populateDungeon();
+
+function populateDungeon() {
+	addCreature(Game.dungeon, Game.dungeon.getEmptyTile(), Game.player);
+	var thingsToAdd = 10;
+	while (thingsToAdd-- > 0) {
+		var t = Game.dungeon.getEmptyTile();
+		addCreature(Game.dungeon, t, new Creature("seeker"));
+	}
+}
+
+function onMouseOver(id) {
+	switch (id) {
+	case "wall":
+	case "floor": Game.info = MSG_INTRO; break;
+	case "player": Game.info = MSG_PLAYER; break;
+	case "seeker": Game.info = MSG_SEEKER; break;
+	default: break;
+	}
+}
+
+Game.doAction = function(action) {
+	switch (action.id) {
+	/*
+	 * "move"
+	 * Move the creature on the current dungeons (a, b) tile to (c, d).
+	 */
+	case "move":
+		var fromTile = this.dungeon.tileAt(action.a, action.b);
+		var xMove = action.c - action.a;
+		var yMove = action.d - action.b;
+		moveCreature(this.dungeon, fromTile, xMove, yMove);
+		break;
+	case "doground":
+		var playerTile = this.dungeon.tileAt(Game.player.x, Game.player.y);
+		if (playerTile.tilename != "stairsup") {
+			Log.add(MSG_FAIL_DOGROUND);
+		} else {
+			Game.floor++;
+			Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
+			populateDungeon();
+			Log.add(MSG_CLIMB);
+		}
+		break;
+	default:
+		throw new Error("Game.doAction(): unknown id: " + action.id);
+	}
+}
 
 Game.update = function() {
+	if (Game.player.actions.length == 0) {
+		return;
+	}
+	for (var i = 0; i < Game.dungeon.creatures.length; i++) {
+		var c = Game.dungeon.creatures[i];
+		if (typeof c.ai === "function") {
+			c.ai();
+		}
+		if (c.actions.length > 0) {
+			this.doAction(c.actions[0]);
+			c.actions = c.actions.slice(1);
+		}
+	}
 }
 
 Game.draw = function() {
@@ -15,6 +76,7 @@ Game.draw = function() {
 	Log.draw();
 	Game.dungeon.draw();
 	document.getElementById("status").innerHTML = MessageStrings.getStatus(this.floor);
+	document.getElementById("info").innerHTML = MessageStrings.get(Game.info);
 }
 
 function moveCreature(floor, fromTile, xMove, yMove) {
@@ -38,16 +100,27 @@ function moveCreature(floor, fromTile, xMove, yMove) {
 	}
 	toTile.creature = fromTile.creature;
 	fromTile.creature = null;
+	toTile.creature.x = toTile.x;
+	toTile.creature.y = toTile.y;
 	return toTile;
 }
 
 Game.input = function(event) {
+	if (Game.player.actions.length > 0) {
+		return;
+	}
+	var px = Game.player.x, py = Game.player.y;
 	switch (event.keyCode) {
-	case 72: Game.playerTile = moveCreature(Game.dungeon, Game.playerTile, -1, 0); break;  // h
-	case 74: Game.playerTile = moveCreature(Game.dungeon, Game.playerTile, 0, 1); break;   // j
-	case 75: Game.playerTile = moveCreature(Game.dungeon, Game.playerTile, 0, -1); break;  // k
-	case 76: Game.playerTile = moveCreature(Game.dungeon, Game.playerTile, 1, 0); break;   // l
-	break;
+	case 72: Game.player.actions.push(new Action("move", px, py, px - 1, py)); break;
+	case 74: Game.player.actions.push(new Action("move", px, py, px, py + 1)); break;
+	case 75: Game.player.actions.push(new Action("move", px, py, px, py - 1)); break;
+	case 76: Game.player.actions.push(new Action("move", px, py, px + 1, py)); break;
+	case 190:
+		if (!event.shiftKey) {
+			break;
+		}
+		Game.player.actions.push(new Action("doground"));
+		break;
 	}
 }
 

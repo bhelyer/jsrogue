@@ -27,12 +27,24 @@ div#status {
 	bottom: 0;
 }
 
+span.no_selection {
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
 span.mostrecentlog {
 	color: white;
 	font-weight: bold;
 }
 
 span.player {
+	color: white;
+	font-weight: bold;
+}
+
+span.seeker {
 	color: white;
 	font-weight: bold;
 }

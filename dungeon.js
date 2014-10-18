@@ -197,20 +197,20 @@ function dungeonDraw() {
 	var lastname = "";
 	for (var y = 0; y < this.height; y++) {
 		// So we can roll the </span> into every opening without outputting garbage HTML.
-		s += "<span class\"rowstart\">";
+		s += "<span class=\"rowstart\">";
 		for (var x = 0; x < this.width; x++) {
 			var tile = this.tiles[y * this.width + x];
 			if (tile.creature === null) {
 				var tname = tile.tilename;
 				if (lastname === "" || lastname != tname) {
-					s += "</span><span class=\"" + tname + "\">";
+					s += "</span><span class=\"" + tname + "\" onmouseover=\"onMouseOver('" + tname + "'); return false;\">";
 					lastname = tname;
 				}
 				s += TileAttrs[tname].c;
 			} else {
 				var cname = tile.creature.creaturename;
 				if (lastname === "" || lastname != cname) {
-					s += "</span><span class=\"" + cname + "\">";
+					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
 					lastname = cname;
 				}
 				s += CreatureAttrs[cname].c;
@@ -269,6 +269,7 @@ function dungeonGetEmptyTile() {
 function DungeonFloor(width, height, generator) {
 	this.width = width;
 	this.height = height;
+	this.creatures = new Array();
 
 	// Methods.
 	this.generate = generator;

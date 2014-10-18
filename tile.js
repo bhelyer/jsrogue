@@ -14,3 +14,11 @@ function Tile(tilename, x, y) {
 	this.x = x;
 	this.y = y;
 }
+
+function addCreature(dungeon, tile, creature) {
+	dungeon.creatures.push(creature);
+	tile.creature = creature;
+	creature.x = tile.x;
+	creature.y = tile.y;
+	creature.dungeon = dungeon;
+}
