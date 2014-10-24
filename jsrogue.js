@@ -21,8 +21,8 @@ function onMouseOver(id) {
 	switch (id) {
 	case "wall":
 	case "floor": Game.info = MSG_INTRO; break;
-	case "player": Game.info = MSG_PLAYER; break;
-	case "seeker": Game.info = MSG_SEEKER; break;
+	case "player": Game.info = MSG_PLAYERDESC; break;
+	case "seeker": Game.info = MSG_SEEKERDESC; break;
 	default: break;
 	}
 }
@@ -41,7 +41,7 @@ Game.doAction = function(action) {
 		break;
 	case "doground":
 		var playerTile = this.dungeon.tileAt(Game.player.x, Game.player.y);
-		if (playerTile.tilename != "stairsup") {
+		if (playerTile.id != "stairsup") {
 			Log.add(MSG_FAIL_DOGROUND);
 		} else {
 			Game.floor++;
@@ -94,7 +94,7 @@ function moveCreature(floor, fromTile, xMove, yMove) {
 		// attack code goes here
 		throw new Error("moveCreature(): implement attack.");
 	}
-	if (!TileAttrs[toTile.tilename].walkable) {
+	if (!TileAttrs[toTile.id].walkable) {
 		Log.add(MSG_NO_WALK);
 		return fromTile;
 	}

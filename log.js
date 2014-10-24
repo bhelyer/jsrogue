@@ -17,7 +17,11 @@ Log.draw = function() {
 		if (i < 0) {
 			str += "<br>";
 		} else {
-			str += MessageStrings.get(Log.messages[i]) + "<br>";
+			if (typeof Log.messages[i] === "function") {
+				str += Log.messages[i]() + "<br>";
+			} else {
+				str += MessageStrings.get(Log.messages[i]) + "<br>";
+			}
 		}
 		if (last) {
 			str += "</span>";

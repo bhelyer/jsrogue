@@ -23,14 +23,14 @@ function simpleDungeonGenerator() {
 	}
 	function wallAdjacentToFloor(x, y) {
 		var tile = d.tileAt(x, y);
-		if (tile.tilename != "wall") {
+		if (tile.id != "wall") {
 			return false;
 		}
 		var left = d.tileAt(x - 1, y);
 		var right = d.tileAt(x + 1, y);
 		var top = d.tileAt(x, y - 1);
 		var bottom = d.tileAt(x, y + 1);
-		return (left && left.tilename === "floor") || (right && right.tilename === "floor") || (top && top.tilename === "floor") || (bottom && bottom.tilename === "floor");
+		return (left && left.id === "floor") || (right && right.id === "floor") || (top && top.id === "floor") || (bottom && bottom.id === "floor");
 	}
 	// Dig a simple corridor.
 	function digCorridor() {
@@ -48,14 +48,14 @@ function simpleDungeonGenerator() {
 				function outOfBounds(tile) {
 					return t.x <= 0 || t.x >= d.width || t.y <= 0 || t.y >= d.height;
 				}
-				if (!t || t.tilename != "wall" || outOfBounds(t)) {
+				if (!t || t.id != "wall" || outOfBounds(t)) {
 					break;
 				}
 				switch (i) {
 				case 0: 
 					var a = d.tileAt(t.x, t.y - 1);
 					var b = d.tileAt(t.x, t.y + 1);
-					if ((!a || a.tilename == "floor") || (!b || b.tilename == "floor")) {
+					if ((!a || a.id == "floor") || (!b || b.id == "floor")) {
 						break DIRECTIONS;
 					}
 					t = d.tileAt(t.x - 1, t.y); 
@@ -63,7 +63,7 @@ function simpleDungeonGenerator() {
 				case 1:
 					var a = d.tileAt(t.x, t.y - 1);
 					var b = d.tileAt(t.x, t.y + 1);
-					if ((!a || a.tilename == "floor") || (!b || b.tilename == "floor")) {
+					if ((!a || a.id == "floor") || (!b || b.id == "floor")) {
 						break DIRECTIONS;
 					}
 					t = d.tileAt(t.x + 1, t.y);
@@ -71,7 +71,7 @@ function simpleDungeonGenerator() {
 				case 2:
 					var a = d.tileAt(t.x - 1, t.y);
 					var b = d.tileAt(t.x + 1, t.y);
-					if ((!a || a.tilename == "floor") || (!b || b.tilename == "floor")) {
+					if ((!a || a.id == "floor") || (!b || b.id == "floor")) {
 						break DIRECTIONS;
 					}
 					t = d.tileAt(t.x, t.y - 1);
@@ -79,7 +79,7 @@ function simpleDungeonGenerator() {
 				case 3:
 					var a = d.tileAt(t.x - 1, t.y);
 					var b = d.tileAt(t.x + 1, t.y);
-					if ((!a || a.tilename == "floor") || (!b || b.tilename == "floor")) {
+					if ((!a || a.id == "floor") || (!b || b.id == "floor")) {
 						break DIRECTIONS;
 					}
 					t = d.tileAt(t.x, t.y + 1);
@@ -91,7 +91,7 @@ function simpleDungeonGenerator() {
 				// Room to dig, so do it.
 				lengthToGo = length;
 				while (lengthToGo > 0) {
-					d.tiles[ry * d.width + rx].tilename = "floor";
+					d.tiles[ry * d.width + rx].id = "floor";
 					switch (i) {
 					case 0:	rx--; break;
 					case 1: rx++; break;
@@ -122,7 +122,7 @@ function simpleDungeonGenerator() {
 				if (x <= 0 || x >= d.width || y <= 0 || y >= d.height) {
 					return false;
 				}
-				if (d.tiles[y * d.width + x].tilename == "floor") {
+				if (d.tiles[y * d.width + x].id == "floor") {
 					return false;
 				}
 			}
@@ -167,7 +167,7 @@ function simpleDungeonGenerator() {
 			var r = getRoomCoords(i, roomWidth, roomHeight);
 			if (spaceForRoom(r.x1, r.y1, r.x2, r.y2)) {
 				d.digRoom(r.x1, r.y1, r.x2, r.y2, "floor");
-				d.tiles[ry * d.width + rx].tilename = "floor";  // The door-way.
+				d.tiles[ry * d.width + rx].id = "floor";  // The door-way.
 				return 1;
 			}
 		}
@@ -189,7 +189,7 @@ function simpleDungeonGenerator() {
 	}
 
 	var t = this.getEmptyTile();
-	t.tilename = "stairsup";
+	t.id = "stairsup";
 }
 
 function dungeonDraw() {
@@ -201,14 +201,14 @@ function dungeonDraw() {
 		for (var x = 0; x < this.width; x++) {
 			var tile = this.tiles[y * this.width + x];
 			if (tile.creature === null) {
-				var tname = tile.tilename;
+				var tname = tile.id;
 				if (lastname === "" || lastname != tname) {
 					s += "</span><span class=\"" + tname + "\" onmouseover=\"onMouseOver('" + tname + "'); return false;\">";
 					lastname = tname;
 				}
 				s += TileAttrs[tname].c;
 			} else {
-				var cname = tile.creature.creaturename;
+				var cname = tile.creature.id;
 				if (lastname === "" || lastname != cname) {
 					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
 					lastname = cname;
@@ -229,7 +229,7 @@ function dungeonTileAt(x, y) {
 	return this.tiles[y * this.width + x];
 }
 
-function dungeonDigRoom(x1, y1, x2, y2, tilename) {
+function dungeonDigRoom(x1, y1, x2, y2, id) {
 	if (x2 < x1) {
 		var tmp = x1;
 		x1 = x2;
@@ -242,21 +242,21 @@ function dungeonDigRoom(x1, y1, x2, y2, tilename) {
 	}
 	for (var y = y1; y <= y2; y++) {
 		for (var x = x1; x <= x2; x++) {
-			this.tiles[y * this.width + x] = new Tile(tilename, x, y);
+			this.tiles[y * this.width + x] = new Tile(id, x, y);
 		}
 	}
 }
 
-function dungeonFill(tilename) {
+function dungeonFill(id) {
 	this.tiles = new Array(this.width * this.height);
-	this.digRoom(0, 0, this.width - 1, this.height - 1, tilename);
+	this.digRoom(0, 0, this.width - 1, this.height - 1, id);
 }
 
 function dungeonGetEmptyTile() {
 	var d = this;
 	function e(x, y) {
 		var t = d.tileAt(x, y);
-		return t.tilename === "floor" && t.creature == null;
+		return t.id === "floor" && t.creature == null;
 	}
 	do {
 		var x = getRandomInt(1, this.width - 1);

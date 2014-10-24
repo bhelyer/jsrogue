@@ -7,8 +7,10 @@ var MSG_OPPOSITELANGUAGE = 4;
 var MSG_FAIL_DOGROUND = 5;
 var MSG_CLIMB = 6;
 var MSG_INTRO = 7;
-var MSG_SEEKER = 8;
-var MSG_PLAYER = 9;
+var MSG_SEEKERDESC = 8;
+var MSG_PLAYERDESC = 9;
+var MSG_X_MOANS = 10;
+var MSG_SEEKER = 11;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -61,7 +63,7 @@ MessageStrings.drawOptions = function() {
 	document.getElementById("return").innerHTML = this.get(MSG_RETURNTOINDEX);
 }
 
-MessageStrings.get = function(id) {
+MessageStrings.get = function(id, a) {
 	var l = this.language;
 	var e = MessageLanguage.ENGLISH;
 	var j = MessageLanguage.JAPANESE;
@@ -74,8 +76,10 @@ MessageStrings.get = function(id) {
 	case MSG_FAIL_DOGROUND: return (l == e) ? "There's nothing here." : "ここにない。";
 	case MSG_CLIMB: return (l == e) ? "You climb the stairs." : "あなたは階段に上る。"
 	case MSG_INTRO: return (l == e) ? E_INTRO : J_INTRO;
-	case MSG_SEEKER: return (l == e) ? E_SEEKER : J_SEEKER;
-	case MSG_PLAYER: return (l == e) ? "Who are you?" : "あなたは誰ですか?";
+	case MSG_SEEKERDESC: return (l == e) ? E_SEEKER : J_SEEKER;
+	case MSG_PLAYERDESC: return (l == e) ? "Who are you?" : "あなたは誰ですか？";
+	case MSG_X_MOANS: return (l == e) ? "The " + this.get(a) + " moans." : this.get(a) + "が唸る。";
+	case MSG_SEEKER: return (l == e) ? "Seeker" : "シーカー";
 	}
 }
 

@@ -8,8 +8,8 @@ var TileAttrs = {
 	stairsup: { walkable:true, transparent: true, c: "<" }
 }
 
-function Tile(tilename, x, y) {
-	this.tilename = tilename;
+function Tile(id, x, y) {
+	this.id = id;
 	this.creature = null;
 	this.x = x;
 	this.y = y;
