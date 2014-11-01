@@ -9,8 +9,17 @@ var MSG_CLIMB = 6;
 var MSG_INTRO = 7;
 var MSG_SEEKERDESC = 8;
 var MSG_PLAYERDESC = 9;
-var MSG_X_MOANS = 10;
+var MSG_A_MOANS = 10;
 var MSG_SEEKER = 11;
+var MSG_FLOOR = 12;
+var MSG_HP = 13;
+var MSG_STR = 14;
+var MSG_DEF = 15;
+var MSG_A_ATTACKS_B = 16;
+var MSG_YOU = 17;
+var MSG_A_RECEIVES_B_DMG = 18;
+var MSG_A_DODGES = 19;
+var MSG_A_DIES = 20;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -63,11 +72,18 @@ MessageStrings.drawOptions = function() {
 	document.getElementById("return").innerHTML = this.get(MSG_RETURNTOINDEX);
 }
 
-MessageStrings.get = function(id, a) {
+MessageStrings.get = function(id, a, b) {
 	var l = this.language;
 	var e = MessageLanguage.ENGLISH;
 	var j = MessageLanguage.JAPANESE;
+	function verb(s, ch) {
+		if (typeof(ch) === "undefined") {
+			ch = " ";
+		}
+		return " " + s + (a === MSG_YOU ? ch : "s" + ch);
+	}
 	switch (id) {
+	case MSG_NONE: throw new Error("MessageStrings.get: Tried to retrieve MSG_NONE.");
 	case MSG_NO_WALK: return ((l == e) ? "You cannot walk there." : "あなたはそこに歩けない。");
 	case MSG_LANGUAGE: return (l == e) ? "Language" : "言語";
 	case MSG_CURRENTLANGUAGE: return (l == j) ? "日本語" : "English";
@@ -78,14 +94,36 @@ MessageStrings.get = function(id, a) {
 	case MSG_INTRO: return (l == e) ? E_INTRO : J_INTRO;
 	case MSG_SEEKERDESC: return (l == e) ? E_SEEKER : J_SEEKER;
 	case MSG_PLAYERDESC: return (l == e) ? "Who are you?" : "あなたは誰ですか？";
-	case MSG_X_MOANS: return (l == e) ? "The " + this.get(a) + " moans." : this.get(a) + "が唸る。";
-	case MSG_SEEKER: return (l == e) ? "Seeker" : "シーカー";
+	case MSG_A_MOANS: return (l == e) ? cap(this.get(a)) + " moans." : this.get(a) + "が唸る。";
+	case MSG_SEEKER: return (l == e) ? "the Seeker" : "シーカー";
+	case MSG_FLOOR: return (l == e) ? "Floor" : "階段";
+	case MSG_HP: return (l == e) ? "Vitality" : "体力";
+	case MSG_STR: return (l == e) ? "Strength" : "筋力";
+	case MSG_DEF: return (l == e) ? "Defence" : "防御力";
+	case MSG_A_ATTACKS_B: return (l == e) ? cap(this.get(a)) + verb("attack") + this.get(b) + "." : this.get(a) + "が" + this.get(b) + "を攻撃する。"
+	case MSG_YOU: return (l == e) ? "you" : "あなた";
+	case MSG_A_RECEIVES_B_DMG: return (l == e) ? cap(this.get(a)) + verb("receive") + b + " damage." : this.get(a) + "が" + b + "ダメージを受ける。";
+	case MSG_A_DODGES: return (l == e) ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
+	case MSG_A_DIES: return (l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。";
 	}
 }
 
-MessageStrings.getStatus = function(floor) {
-	switch (this.language) {
-	case MessageLanguage.ENGLISH:  return '<span class="unit">Floor</span>: ' + ((floor == 0) ? "G" : floor);
-	case MessageLanguage.JAPANESE: return (floor + 1) + '<span class="unit">階</span>';
+MessageStrings.getStatus = function(floor, p) {
+	var l = this.language;
+	function getFloor() {
+		if (l === MessageLanguage.JAPANESE) {
+			return floor + 1;
+		} else {
+			if (floor === 0) {
+				return "G";
+			} else {
+				return floor;
+			}
+		}
 	}
+	return '<span class="unit">' + this.get(MSG_FLOOR) + '</span>:' + getFloor() +
+			' <span class="unit">' + this.get(MSG_HP) + '</span>:' + p.hp + "/" + p.maxHp +
+			' <span class="unit">' + this.get(MSG_STR) + '</span>:' + p.str +
+			' <span class="unit">' + this.get(MSG_DEF) + '</span>:' + p.def;
+	var t = this;
 }

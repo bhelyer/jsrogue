@@ -68,6 +68,15 @@ Game.update = function() {
 			this.doAction(c.actions[0]);
 			c.actions = c.actions.slice(1);
 		}
+		if (c.hp <= 0) {
+			Log.add(function() { return MessageStrings.get(MSG_A_DIES, c.name); });
+			Game.dungeon.creatures.splice(i--, 1); 
+			var t = this.dungeon.tileAt(c.x, c.y);
+			if (t.creature != c) {
+				throw new Error("Game.update: Dungeon and creature disagree on location upon death.");
+			}
+			t.creature = null;
+		}
 	}
 }
 
@@ -75,7 +84,7 @@ Game.draw = function() {
 	MessageStrings.drawOptions();
 	Log.draw();
 	Game.dungeon.draw();
-	document.getElementById("status").innerHTML = MessageStrings.getStatus(this.floor);
+	document.getElementById("status").innerHTML = MessageStrings.getStatus(this.floor, this.player);
 	document.getElementById("info").innerHTML = MessageStrings.get(Game.info);
 }
 
@@ -87,22 +96,37 @@ function moveCreature(floor, fromTile, xMove, yMove) {
 	var newY = fromTile.y + yMove;
 	if (newX < 0 || newX >= floor.width || newY < 0 || newY >= floor.height) {
 		Log.add(MSG_NO_WALK);
-		return fromTile;
+		return;
 	}
 	var toTile = floor.tileAt(newX, newY);
 	if (toTile.creature != null) {
-		// attack code goes here
-		throw new Error("moveCreature(): implement attack.");
+		attackCreature(fromTile.creature, toTile.creature);
+		return;
 	}
 	if (!TileAttrs[toTile.id].walkable) {
 		Log.add(MSG_NO_WALK);
-		return fromTile;
+		return;
 	}
 	toTile.creature = fromTile.creature;
 	fromTile.creature = null;
 	toTile.creature.x = toTile.x;
 	toTile.creature.y = toTile.y;
-	return toTile;
+	return;
+}
+
+function attackCreature(attacker, defender) {
+	Log.add(function() { return MessageStrings.get(MSG_A_ATTACKS_B, attacker.name, defender.name); } );
+	var halfStr = Math.floor(attacker.str / 2);
+	var halfDef = Math.floor(defender.def / 2);
+	var atk = getRandomInt(attacker.str - halfStr, attacker.str + halfStr);
+	var def = getRandomInt(defender.def - halfDef, defender.str + halfDef);
+	var damage = atk - def;
+	if (damage <= 0) {
+		Log.add(function() { return MessageStrings.get(MSG_A_DODGES, defender.name); });
+	} else {
+		defender.hp -= damage;
+		Log.add(function() { return MessageStrings.get(MSG_A_RECEIVES_B_DMG, defender.name, damage); });
+	}
 }
 
 Game.input = function(event) {
@@ -121,7 +145,10 @@ Game.input = function(event) {
 		}
 		Game.player.actions.push(new Action("doground"));
 		break;
+	default:
+		return;
 	}
+	event.preventDefault();
 }
 
 Game.run = function() {
@@ -131,6 +158,7 @@ Game.run = function() {
 
 Game._intervalId = setInterval(Game.run, 1000 / Game.fps);
 document.addEventListener("keydown", Game.input);
+document.addEventListener("keyrepeat", Game.input);
 if (getQueryParams(document.location.search).lang == "japanese") {
 	MessageStrings.toggleLanguage();
 }

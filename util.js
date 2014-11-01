@@ -42,3 +42,8 @@ function getQueryParams(qs) {
 
 	return params;
 }
+
+// Capitalise the first letter of a string.
+function cap(s) {
+	return s.charAt(0).toUpperCase() + s.slice(1);
+}
