@@ -50,6 +50,8 @@ Game.doAction = function(action) {
 			Log.add(MSG_CLIMB);
 		}
 		break;
+	case "wait":
+		break;
 	default:
 		throw new Error("Game.doAction(): unknown id: " + action.id);
 	}
@@ -140,10 +142,11 @@ Game.input = function(event) {
 	case 75: Game.player.actions.push(new Action("move", px, py, px, py - 1)); break;
 	case 76: Game.player.actions.push(new Action("move", px, py, px + 1, py)); break;
 	case 190:
-		if (!event.shiftKey) {
-			break;
+		if (event.shiftKey) {
+			Game.player.actions.push(new Action("doground"));
+		} else {
+			Game.player.actions.push(new Action("wait"));
 		}
-		Game.player.actions.push(new Action("doground"));
 		break;
 	default:
 		return;
