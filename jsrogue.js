@@ -1,7 +1,8 @@
 var Game = {
 	fps:12,
 	floor:0,
-	info:MSG_INTRO
+	info:MSG_INTRO,
+	over:false
 }
 
 Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
@@ -58,7 +59,7 @@ Game.doAction = function(action) {
 }
 
 Game.update = function() {
-	if (Game.player.actions.length == 0) {
+	if (Game.player.actions.length == 0 || Game.over) {
 		return;
 	}
 	for (var i = 0; i < Game.dungeon.creatures.length; i++) {
@@ -71,13 +72,18 @@ Game.update = function() {
 			c.actions = c.actions.slice(1);
 		}
 		if (c.hp <= 0) {
-			Log.add(function() { return MessageStrings.get(MSG_A_DIES, c.name); });
+			var deathMessage = function(name) { return function() { return MessageStrings.get(MSG_A_DIES, name); } }(c.name);
+			Log.add(deathMessage);
 			Game.dungeon.creatures.splice(i--, 1); 
 			var t = this.dungeon.tileAt(c.x, c.y);
 			if (t.creature != c) {
 				throw new Error("Game.update: Dungeon and creature disagree on location upon death.");
 			}
 			t.creature = null;
+			if (c == Game.player) {
+				Game.over = true;
+				return;
+			}
 		}
 	}
 }

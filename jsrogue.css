@@ -50,3 +50,8 @@ span.unit {
 	color: white;
 	font-weight: bold;
 }
+
+span#playerdeath {
+	color: darkred;
+	font-weight: bold;
+}

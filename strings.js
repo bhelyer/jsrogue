@@ -104,7 +104,7 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_YOU: return (l == e) ? "you" : "あなた";
 	case MSG_A_RECEIVES_B_DMG: return (l == e) ? cap(this.get(a)) + verb("receive") + b + " damage." : this.get(a) + "が" + b + "ダメージを受ける。";
 	case MSG_A_DODGES: return (l == e) ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
-	case MSG_A_DIES: return (l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。";
+	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + ((l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
 	}
 }
 
