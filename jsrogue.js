@@ -143,15 +143,25 @@ Game.input = function(event) {
 	}
 	var px = Game.player.x, py = Game.player.y;
 	switch (event.keyCode) {
-	case 72: Game.player.actions.push(new Action("move", px, py, px - 1, py)); break;
-	case 74: Game.player.actions.push(new Action("move", px, py, px, py + 1)); break;
-	case 75: Game.player.actions.push(new Action("move", px, py, px, py - 1)); break;
-	case 76: Game.player.actions.push(new Action("move", px, py, px + 1, py)); break;
-	case 190:
+	case 72: Game.player.actions.push(new Action("move", px, py, px - 1, py)); break;      // h
+	case 74: Game.player.actions.push(new Action("move", px, py, px, py + 1)); break;      // j
+	case 75: Game.player.actions.push(new Action("move", px, py, px, py - 1)); break;      // k
+	case 76: Game.player.actions.push(new Action("move", px, py, px + 1, py)); break;      // l
+	case 89: Game.player.actions.push(new Action("move", px, py, px - 1, py - 1)); break;  // y
+	case 85: Game.player.actions.push(new Action("move", px, py, px + 1, py - 1)); break;  // u
+	case 66: Game.player.actions.push(new Action("move", px, py, px - 1, py + 1)); break;  // b
+	case 78: Game.player.actions.push(new Action("move", px, py, px + 1, py + 1)); break;  // n
+	case 71: Game.player.actions.push(new Action("doground")); break;                      // g
+	case 190:  // .
 		if (event.shiftKey) {
 			Game.player.actions.push(new Action("doground"));
 		} else {
 			Game.player.actions.push(new Action("wait"));
+		}
+		break;
+	case 188:  // ,
+		if (event.shiftKey) {
+			Game.player.actions.push(new Action("doground"));
 		}
 		break;
 	default:
