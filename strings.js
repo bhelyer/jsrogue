@@ -20,6 +20,7 @@ var MSG_YOU = 17;
 var MSG_A_RECEIVES_B_DMG = 18;
 var MSG_A_DODGES = 19;
 var MSG_A_DIES = 20;
+var MSG_OAKEN_HEART = 21;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -105,6 +106,7 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_A_RECEIVES_B_DMG: return (l == e) ? cap(this.get(a)) + verb("receive") + b + " damage." : this.get(a) + "が" + b + "ダメージを受ける。";
 	case MSG_A_DODGES: return (l == e) ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
 	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + ((l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
+	case MSG_OAKEN_HEART: return (l == e) ? "oaken heart" : "オークの心臓";
 	}
 }
 

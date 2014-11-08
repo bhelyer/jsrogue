@@ -11,6 +11,7 @@ var TileAttrs = {
 function Tile(id, x, y) {
 	this.id = id;
 	this.creature = null;
+	this.items = new Array();
 	this.x = x;
 	this.y = y;
 }
