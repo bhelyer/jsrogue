@@ -1,0 +1,52 @@
+$bg: #0998DE;
+$fg: #BBBBDD;
+$boxbg: #0579B1;
+$padding: 10px;
+
+html {
+	background-color: $bg;
+	color: $fg;
+	font-family: Consolas, monospace;
+	font-size: small;
+}
+
+a {
+	color: inherit;
+	text-decoration: underline;
+	cursor: pointer
+}
+
+#log {
+	background-color: $boxbg;
+	margin-bottom: $padding;
+}
+
+#dungeon {
+	background-color: $boxbg;
+	float: left;
+	white-space:nowrap;
+	margin-right: $padding;
+}
+
+#info {
+	float: left;
+	width: 30%;
+	background-color: $boxbg;
+	padding-left: $padding;
+	padding-right: $padding;
+}
+
+#status {
+	background-color: $boxbg;
+	margin-bottom: $padding;
+}
+
+span.mostrecentlog, .player, span.seeker, span.stairsup, span.unit {
+	color: white;
+	font-weight: bold;
+}
+
+span#playerdeath {
+	color: #FC4D65;
+	font-weight: bold;
+}
