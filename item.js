@@ -1,4 +1,4 @@
-var ItemAttrs {
+var ItemAttrs = {
 	oaken_heart: { c:"心", name:MSG_OAKENHEART }
 }
 
