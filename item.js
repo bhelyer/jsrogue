@@ -1,5 +1,5 @@
 var ItemAttrs = {
-	oaken_heart: { c:"心", name:MSG_OAKENHEART }
+	oaken_heart: { c:"心", name:MSG_OAKEN_HEART }
 }
 
 function Item(id) {
