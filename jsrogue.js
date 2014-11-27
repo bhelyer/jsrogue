@@ -138,7 +138,7 @@ function attackCreature(attacker, defender) {
 }
 
 Game.input = function(event) {
-	if (Game.player.actions.length > 0) {
+	if (Game.player.actions.length > 0 || event.altKey) {
 		return;
 	}
 	var px = Game.player.x, py = Game.player.y;
