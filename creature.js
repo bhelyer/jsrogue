@@ -5,6 +5,11 @@ var CreatureAttrs = {
 
 function seekAi() {
 	var t = this;
+	var tile = this.dungeon.tileAt(this.x, this.y);
+	if (tile.items.length > 0) {
+			this.actions.push(new Action("doground", this.x, this.y));
+			return;
+	}
 	var seen = this.canSee(Game.player);
 	if (seen && !this.seenPlayer) {
 		Log.add(function() { return MessageStrings.get(MSG_A_MOANS, t.name); });
@@ -45,11 +50,34 @@ function creatureCanSee(location) {
 	return result;
 }
 
+function creatureDie() {
+	if (this.hp <= 0) {
+		if (Game.player.canSee(this)) {
+			var deathMessage = function(name) { return function() { return MessageStrings.get(MSG_A_DIES, name); } }(this.name);
+			Log.add(deathMessage);
+		}
+		var t = this.dungeon.tileAt(this.x, this.y);
+		while (this.inventory.length > 0) {  // Drop entire inventory to the ground on death.
+			t.items.push(this.inventory.pop());
+		}
+		if (t.creature !== this) {
+			throw new Error("creatureDie: Dungeon and creature disagree on location upon death.");
+		}
+		t.creature = null;
+		if (this === Game.player) {
+			Game.player.hp = 0;
+			Game.over = true;
+			return;
+		}
+	}
+}
+
 function Creature(id) {
 	this.id = id;
 	this.actions = new Array();
 	this.inventory = new Array();
 	this.canSee = creatureCanSee;
+	this.dieIfNeeded = creatureDie;
 	var attr = CreatureAttrs[id];
 	this.name = attr.name;
 	this.hp = this.maxHp = new Dice(attr.initialMaxHP).roll();

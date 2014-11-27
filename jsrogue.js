@@ -49,7 +49,9 @@ Game.doAction = function(action) {
 		if (tile.items.length > 0) {
 			while (tile.items.length > 0) {
 				creature.inventory.push(tile.items.pop());
-				Log.add(function() { return MessageStrings.get(MSG_A_PICKS_UP_B, creature.name, creature.inventory[creature.inventory.length - 1].name)});
+				if (Game.player.canSee(creature)) {
+					Log.add(function() { return MessageStrings.get(MSG_A_PICKS_UP_B, creature.name, creature.inventory[creature.inventory.length - 1].name)});
+				}
 			}
 		} else if (tile.id === "stairsup") {
 			Game.floor++;
@@ -73,26 +75,16 @@ Game.update = function() {
 	}
 	for (var i = 0; i < Game.dungeon.creatures.length; i++) {
 		var c = Game.dungeon.creatures[i];
+		if (c.hp <= 0) {
+			Game.dungeon.creatures.splice(i--, 1);
+			continue;
+		}
 		if (typeof c.ai === "function") {
 			c.ai();
 		}
 		if (c.actions.length > 0) {
 			this.doAction(c.actions[0]);
 			c.actions = c.actions.slice(1);
-		}
-		if (c.hp <= 0) {
-			var deathMessage = function(name) { return function() { return MessageStrings.get(MSG_A_DIES, name); } }(c.name);
-			Log.add(deathMessage);
-			Game.dungeon.creatures.splice(i--, 1); 
-			var t = this.dungeon.tileAt(c.x, c.y);
-			if (t.creature !== c) {
-				throw new Error("Game.update: Dungeon and creature disagree on location upon death.");
-			}
-			t.creature = null;
-			if (c === Game.player) {
-				Game.over = true;
-				return;
-			}
 		}
 	}
 }
@@ -149,6 +141,7 @@ function attackCreature(attacker, defender) {
 	} else {
 		defender.hp -= damage;
 		Log.add(function() { return MessageStrings.get(MSG_A_RECEIVES_B_DMG, defender.name, damage); });
+		defender.dieIfNeeded();
 	}
 }
 
