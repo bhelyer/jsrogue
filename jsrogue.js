@@ -41,13 +41,17 @@ Game.doAction = function(action) {
 		moveCreature(this.dungeon, fromTile, xMove, yMove);
 		break;
 	case "doground":
-		// TODO: This shouldn't be tied to the player.
-		var playerTile = this.dungeon.tileAt(Game.player.x, Game.player.y);
-		if (playerTile.items.length > 0) {
-			while (playerTile.items.length > 0) {
-				Game.player.inventory.push(playerTile.items.pop());
+		var tile = this.dungeon.tileAt(action.a, action.b);
+		var creature = tile.creature;
+		if (creature === null) {
+			throw new Error("doAction: doground empty tile");
+		}
+		if (tile.items.length > 0) {
+			while (tile.items.length > 0) {
+				creature.inventory.push(tile.items.pop());
+				// msg
 			}
-		} else if (playerTile.id === "stairsup") {
+		} else if (tile.id === "stairsup") {
 			Game.floor++;
 			Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
 			populateDungeon();
@@ -162,17 +166,17 @@ Game.input = function(event) {
 	case 85: Game.player.actions.push(new Action("move", px, py, px + 1, py - 1)); break;  // u
 	case 66: Game.player.actions.push(new Action("move", px, py, px - 1, py + 1)); break;  // b
 	case 78: Game.player.actions.push(new Action("move", px, py, px + 1, py + 1)); break;  // n
-	case 71: Game.player.actions.push(new Action("doground")); break;                      // g
+	case 71: Game.player.actions.push(new Action("doground", px, py)); break;                      // g
 	case 190:  // .
 		if (event.shiftKey) {
-			Game.player.actions.push(new Action("doground"));
+			Game.player.actions.push(new Action("doground", px, py));
 		} else {
 			Game.player.actions.push(new Action("wait"));
 		}
 		break;
 	case 188:  // ,
 		if (event.shiftKey) {
-			Game.player.actions.push(new Action("doground"));
+			Game.player.actions.push(new Action("doground", px, py));
 		}
 		break;
 	default:
