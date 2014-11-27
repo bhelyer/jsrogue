@@ -89,12 +89,25 @@ Game.update = function() {
 	}
 }
 
+function drawInventory() {
+	if (Game.player.inventory.length == 0) {
+		return MessageStrings.get(MSG_EMPTY);
+	}
+	var s = new String();
+	for (var i = 0, len = Game.player.inventory.length; i < len; ++i) {
+		var item = Game.player.inventory[i];
+		s += "<span class=\"inventoryitem\">" + String.fromCharCode("A".charCodeAt(0) + i) + "</span>: " + MessageStrings.get(item.name) + "<br>"
+	}
+	return s;
+}
+
 Game.draw = function() {
 	MessageStrings.drawOptions();
 	Log.draw();
 	Game.dungeon.draw();
 	document.getElementById("status").innerHTML = MessageStrings.getStatus(this.floor, this.player);
 	document.getElementById("info").innerHTML = MessageStrings.get(Game.info);
+	document.getElementById("inventory").innerHTML = drawInventory();
 }
 
 function moveCreature(floor, fromTile, xMove, yMove) {

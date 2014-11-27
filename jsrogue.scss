@@ -19,6 +19,7 @@ a {
 
 #log {
 	background-color: $boxbg;
+	margin-top: $padding;
 	margin-bottom: $padding;
 }
 
@@ -37,12 +38,18 @@ a {
 	padding-right: $padding;
 }
 
+#inventory {
+	@extend #info;
+	padding: $padding;
+	margin-top: $padding;
+}
+
 #status {
 	background-color: $boxbg;
 	margin-bottom: $padding;
 }
 
-span.mostrecentlog, .player, span.seeker, span.stairsup, span.unit {
+span.mostrecentlog, .player, span.seeker, span.stairsup, span.unit, span.inventoryitem {
 	color: white;
 	font-weight: bold;
 }
