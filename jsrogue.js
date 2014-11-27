@@ -41,14 +41,19 @@ Game.doAction = function(action) {
 		moveCreature(this.dungeon, fromTile, xMove, yMove);
 		break;
 	case "doground":
+		// TODO: This shouldn't be tied to the player.
 		var playerTile = this.dungeon.tileAt(Game.player.x, Game.player.y);
-		if (playerTile.id != "stairsup") {
-			Log.add(MSG_FAIL_DOGROUND);
-		} else {
+		if (playerTile.items.length > 0) {
+			while (playerTile.items.length > 0) {
+				Game.player.inventory.push(playerTile.items.pop());
+			}
+		} else if (playerTile.id === "stairsup") {
 			Game.floor++;
 			Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
 			populateDungeon();
 			Log.add(MSG_CLIMB);
+		} else {
+			Log.add(MSG_FAIL_DOGROUND);
 		}
 		break;
 	case "wait":
@@ -76,11 +81,11 @@ Game.update = function() {
 			Log.add(deathMessage);
 			Game.dungeon.creatures.splice(i--, 1); 
 			var t = this.dungeon.tileAt(c.x, c.y);
-			if (t.creature != c) {
+			if (t.creature !== c) {
 				throw new Error("Game.update: Dungeon and creature disagree on location upon death.");
 			}
 			t.creature = null;
-			if (c == Game.player) {
+			if (c === Game.player) {
 				Game.over = true;
 				return;
 			}
@@ -114,6 +119,12 @@ function moveCreature(floor, fromTile, xMove, yMove) {
 	if (!TileAttrs[toTile.id].walkable) {
 		Log.add(MSG_NO_WALK);
 		return;
+	}
+	if (toTile.items.length > 0 && fromTile.creature === Game.player) {
+		for (var i = 0, len = toTile.items.length; i < len; ++i) {
+			var name = ItemAttrs[toTile.items[i].id].name;
+			Log.add(function() { return MessageStrings.get(MSG_A_IS_HERE, name); });
+		}
 	}
 	toTile.creature = fromTile.creature;
 	fromTile.creature = null;

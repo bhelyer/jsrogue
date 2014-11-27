@@ -48,6 +48,7 @@ function creatureCanSee(location) {
 function Creature(id) {
 	this.id = id;
 	this.actions = new Array();
+	this.inventory = new Array();
 	this.canSee = creatureCanSee;
 	var attr = CreatureAttrs[id];
 	this.name = attr.name;

@@ -23,3 +23,7 @@ function addCreature(dungeon, tile, creature) {
 	creature.y = tile.y;
 	creature.dungeon = dungeon;
 }
+
+function addItem(dungeon, tile, item) {
+	tile.items.push(item);
+}

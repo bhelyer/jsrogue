@@ -21,6 +21,7 @@ var MSG_A_RECEIVES_B_DMG = 18;
 var MSG_A_DODGES = 19;
 var MSG_A_DIES = 20;
 var MSG_OAKEN_HEART = 21;
+var MSG_A_IS_HERE = 22;  // Inanimate.
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -83,6 +84,13 @@ MessageStrings.get = function(id, a, b) {
 		}
 		return " " + s + (a === MSG_YOU ? ch : "s" + ch);
 	}
+	function an(s) {
+		if (s[0] === "a" || s[0] === "e" || s[0] === "i" || s[0] === "o" || s[0] == "u") {
+			return "an " + s;
+		} else {
+			return "a " + s;
+		}
+	}
 	switch (id) {
 	case MSG_NONE: throw new Error("MessageStrings.get: Tried to retrieve MSG_NONE.");
 	case MSG_NO_WALK: return ((l == e) ? "You cannot walk there." : "あなたはそこに歩けない。");
@@ -107,6 +115,7 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_A_DODGES: return (l == e) ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
 	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + ((l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
 	case MSG_OAKEN_HEART: return (l == e) ? "oaken heart" : "オークの心臓";
+	case MSG_A_IS_HERE: return (l == e) ? (cap(an(this.get(a))) + " is here.") : this.get(a) + "がここにある。";
 	}
 }
 

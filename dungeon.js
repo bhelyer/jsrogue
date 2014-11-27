@@ -190,6 +190,9 @@ function simpleDungeonGenerator() {
 
 	var t = this.getEmptyTile();
 	t.id = "stairsup";
+	
+	var heartTile = this.getEmptyTile();
+	addItem(this, heartTile, new Item("oaken_heart"));
 }
 
 function dungeonDraw() {
@@ -200,20 +203,27 @@ function dungeonDraw() {
 		s += "<span class=\"rowstart\">";
 		for (var x = 0; x < this.width; x++) {
 			var tile = this.tiles[y * this.width + x];
-			if (tile.creature === null) {
-				var tname = tile.id;
-				if (lastname === "" || lastname != tname) {
-					s += "</span><span class=\"" + tname + "\" onmouseover=\"onMouseOver('" + tname + "'); return false;\">";
-					lastname = tname;
-				}
-				s += TileAttrs[tname].c;
-			} else {
+			if (tile.creature !== null) {
 				var cname = tile.creature.id;
 				if (lastname === "" || lastname != cname) {
 					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
 					lastname = cname;
 				}
 				s += CreatureAttrs[cname].c;
+			} else if (tile.items.length > 0) {
+				var iname = tile.items[tile.items.length - 1].id;
+				if (lastname === "" || lastname != iname) {
+					s += "</span><span class=\"" + iname + "\" onmouseover=\"onMouseOver('" + iname + "'); return false;\">";
+					lastname = iname;
+				}
+				s += ItemAttrs[iname].c;
+			} else {
+				var tname = tile.id;
+				if (lastname === "" || lastname != tname) {
+					s += "</span><span class=\"" + tname + "\" onmouseover=\"onMouseOver('" + tname + "'); return false;\">";
+					lastname = tname;
+				}
+				s += TileAttrs[tname].c;
 			}
 		}
 		s += "</span><br>";
