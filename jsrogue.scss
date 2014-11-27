@@ -1,5 +1,6 @@
 $bg: #0998DE;
 $fg: #BBBBDD;
+$light: #F0F0FE;
 $boxbg: #0579B1;
 $deadred: #FC4D65;
 $padding: 10px;
@@ -52,6 +53,10 @@ a {
 span.mostrecentlog, .player, span.seeker, span.stairsup, span.unit, span.inventoryitem {
 	color: white;
 	font-weight: bold;
+}
+
+span.exmostrecentlog {
+	color: $light;
 }
 
 span.oaken_heart {

@@ -4,7 +4,8 @@
 
 var Log = {
 	display_height:10,  // How many messages to show in the log at once.
-	messages:[]
+	messages:[],
+	mostrecentlogs:[]
 }
 
 Log.draw = function() {
@@ -13,6 +14,11 @@ Log.draw = function() {
 		var last = i === Log.messages.length - 1;
 		if (last) {
 			str += "<span class=\"mostrecentlog\">";
+			this.mostrecentlogs[i] = true;
+		} else if (this.mostrecentlogs[i] === true) {
+			str += "<span class=\"exmostrecentlog\">";
+		} else {
+			str += "<span class=\"regularlog\">";
 		}
 		if (i < 0) {
 			str += "<br>";
@@ -23,13 +29,12 @@ Log.draw = function() {
 				str += MessageStrings.get(Log.messages[i]) + "<br>";
 			}
 		}
-		if (last) {
-			str += "</span>";
-		}
+		str += "</span>";
 	}
 	document.getElementById("log").innerHTML = str;
 }
 
 Log.add = function(msg) {
 	Log.messages.push(msg);
+	Log.mostrecentlogs.push(false);
 }
