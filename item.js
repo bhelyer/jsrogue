@@ -7,4 +7,5 @@ function Item(id) {
 		throw new Error("Item(): Unknown item id: " + id);
 	}
 	this.id = id;
+	this.name = ItemAttrs[id].name;
 }

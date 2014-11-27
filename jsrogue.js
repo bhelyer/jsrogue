@@ -49,7 +49,7 @@ Game.doAction = function(action) {
 		if (tile.items.length > 0) {
 			while (tile.items.length > 0) {
 				creature.inventory.push(tile.items.pop());
-				// msg
+				Log.add(function() { return MessageStrings.get(MSG_A_PICKS_UP_B, creature.name, creature.inventory[creature.inventory.length - 1].name)});
 			}
 		} else if (tile.id === "stairsup") {
 			Game.floor++;

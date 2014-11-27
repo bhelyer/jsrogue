@@ -22,6 +22,7 @@ var MSG_A_DODGES = 19;
 var MSG_A_DIES = 20;
 var MSG_OAKEN_HEART = 21;
 var MSG_A_IS_HERE = 22;  // Inanimate.
+var MSG_A_PICKS_UP_B = 23;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -116,6 +117,7 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + ((l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
 	case MSG_OAKEN_HEART: return (l == e) ? "oaken heart" : "オークの心臓";
 	case MSG_A_IS_HERE: return (l == e) ? (cap(an(this.get(a))) + " is here.") : this.get(a) + "がここにある。";
+	case MSG_A_PICKS_UP_B: return (l == e) ? cap(this.get(a)) + " " + verb("pick") + " up " + an(this.get(b)) + "." : this.get(a) + "は" + this.get(b) + "を拾う。";
 	}
 }
 
