@@ -60,8 +60,12 @@ span.exmostrecentlog {
 }
 
 span.oaken_heart {
-	color: red;
+	color: $deadred;
 	font-weight: bold;
+}
+
+span.playerdmg {
+	color: $deadred;
 }
 
 span#playerdeath {

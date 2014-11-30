@@ -93,6 +93,9 @@ MessageStrings.get = function(id, a, b) {
 			return "a " + s;
 		}
 	}
+	function span(str, className) {
+		return "<span class=\"" + className + "\">" + str + "</span>";
+	}
 	switch (id) {
 	case MSG_NONE: throw new Error("MessageStrings.get: Tried to retrieve MSG_NONE.");
 	case MSG_NO_WALK: return ((l == e) ? "You cannot walk there." : "あなたはそこに歩けない。");
@@ -113,7 +116,11 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_DEF: return (l == e) ? "Defence" : "防御力";
 	case MSG_A_ATTACKS_B: return (l == e) ? cap(this.get(a)) + verb("attack") + this.get(b) + "." : this.get(a) + "が" + this.get(b) + "を攻撃する。"
 	case MSG_YOU: return (l == e) ? "you" : "あなた";
-	case MSG_A_RECEIVES_B_DMG: return (l == e) ? cap(this.get(a)) + verb("receive") + b + " damage." : this.get(a) + "が" + b + "ダメージを受ける。";
+	case MSG_A_RECEIVES_B_DMG:
+		var dmg = span(b, (a === MSG_YOU) ? "playerdmg" : "enemydmg");
+		return (l == e) ?
+			cap(this.get(a)) + verb("receive") + dmg + " damage." :
+			this.get(a) + "が" + dmg + "ダメージを受ける。";
 	case MSG_A_DODGES: return (l == e) ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
 	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + ((l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
 	case MSG_OAKEN_HEART: return (l == e) ? "oaken heart" : "オークの心臓";
