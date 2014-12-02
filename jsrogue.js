@@ -1,13 +1,8 @@
 var Game = {
-	fps:12,
 	floor:0,
 	info:MSG_INTRO,
 	over:false
 }
-
-Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
-Game.player = new Creature("player");
-populateDungeon();
 
 function populateDungeon() {
 	addCreature(Game.dungeon, Game.dungeon.getEmptyTile(), Game.player);
@@ -159,7 +154,7 @@ function attackCreature(attacker, defender) {
 }
 
 Game.input = function(event) {
-	if (Game.player.actions.length > 0 || event.altKey) {
+	if (Game.player.actions.length > 0 || event.altKey || event.metaKey || event.ctrlKey) {
 		return;
 	}
 	var px = Game.player.x, py = Game.player.y;
@@ -191,14 +186,20 @@ Game.input = function(event) {
 	event.preventDefault();
 }
 
-Game.run = function() {
+Game.run = function(event) {
+	Game.input(event);
 	Game.update();
 	Game.draw();
 }
 
-Game._intervalId = setInterval(Game.run, 1000 / Game.fps);
-document.addEventListener("keydown", Game.input);
-document.addEventListener("keyrepeat", Game.input);
-if (getQueryParams(document.location.search).lang == "japanese") {
-	MessageStrings.toggleLanguage();
+window.onload = function() {
+	Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
+	Game.player = new Creature("player");
+	populateDungeon();
+	if (getQueryParams(document.location.search).lang == "japanese") {
+		MessageStrings.toggleLanguage();
+	}
+	Game.draw();
 }
+document.addEventListener("keydown", Game.run);
+document.addEventListener("keyrepeat", Game.run);
