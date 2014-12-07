@@ -15,7 +15,9 @@ function fovUpdate(p) {
 		for (var y = 0, h = d.height; y < h; ++y) {
 			var i = index(x, y);
 			var v = this.fovMap[i];
-			this.fovMap[i] = isSeen(x, y) ? FOV_SEEN : (v !== FOV_UNKNOWN) ? FOV_KNOWN : FOV_UNKNOWN;
+			var location = {};
+			location.x = x; location.y = y;
+			this.fovMap[i] = p.canSee(location) ? FOV_SEEN : (v !== FOV_UNKNOWN) ? FOV_KNOWN : FOV_UNKNOWN;
 		}
 	}
 }

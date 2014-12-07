@@ -41,7 +41,12 @@ function creatureCanSee(location) {
 		}
 		var t = c.dungeon.tileAt(x, y);
 		if (!TileAttrs[t.id].transparent) {
-			return result = false;
+			if (x === location.x && y === location.y) {
+				result = true;
+				return false;
+			} else {
+				return result = false;
+			}
 		}
 		return true;
 	}
