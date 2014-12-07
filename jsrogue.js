@@ -53,6 +53,9 @@ Game.doAction = function(action) {
 			Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
 			populateDungeon();
 			Log.add(MSG_CLIMB);
+			if (creature === Game.player) {
+				Game.player.fov.update(Game.player);
+			}
 		} else {
 			Log.add(MSG_FAIL_DOGROUND);
 		}
