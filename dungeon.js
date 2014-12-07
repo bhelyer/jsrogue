@@ -202,29 +202,46 @@ function dungeonDraw() {
 		// So we can roll the </span> into every opening without outputting garbage HTML.
 		s += "<span class=\"rowstart\">";
 		for (var x = 0; x < this.width; x++) {
-			var tile = this.tiles[y * this.width + x];
+			var i = y * this.width + x;
+			var tile = this.tiles[i];
+			var cname = "";
+			if (Game.player.fov.fovMap[i] === FOV_KNOWN) {
+				cname = "remembered";
+			} else if (Game.player.fov.fovMap[i] === FOV_UNKNOWN) {
+				if (lastname != "") {
+					s += "</span><span>"
+					lastname = "";
+				}
+				s += "&nbsp;";
+				continue;
+			}
+
 			if (tile.creature !== null) {
-				var cname = tile.creature.id;
+				if (cname.length === 0) {
+					cname = tile.creature.id;
+				}
 				if (lastname === "" || lastname != cname) {
 					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
-					lastname = cname;
 				}
-				s += CreatureAttrs[cname].c;
+				s += CreatureAttrs[tile.creature.id].c;
 			} else if (tile.items.length > 0) {
-				var iname = tile.items[tile.items.length - 1].id;
-				if (lastname === "" || lastname != iname) {
-					s += "</span><span class=\"" + iname + "\" onmouseover=\"onMouseOver('" + iname + "'); return false;\">";
-					lastname = iname;
+				if (cname.length === 0) {
+					cname = tile.items[tile.items.length - 1].id;
 				}
-				s += ItemAttrs[iname].c;
+				if (lastname === "" || lastname != cname) {
+					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
+				}
+				s += ItemAttrs[tile.items[tile.items.length - 1].id].c;
 			} else {
-				var tname = tile.id;
-				if (lastname === "" || lastname != tname) {
-					s += "</span><span class=\"" + tname + "\" onmouseover=\"onMouseOver('" + tname + "'); return false;\">";
-					lastname = tname;
+				if (cname.length === 0) {
+					cname = tile.id;
 				}
-				s += TileAttrs[tname].c;
+				if (lastname === "" || lastname != cname) {
+					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
+				}
+				s += TileAttrs[tile.id].c;
 			}
+			lastname = cname;
 		}
 		s += "</span><br>";
 		lastname = "";

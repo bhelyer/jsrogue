@@ -22,6 +22,9 @@ function addCreature(dungeon, tile, creature) {
 	creature.x = tile.x;
 	creature.y = tile.y;
 	creature.dungeon = dungeon;
+	if (creature.id === "player") {
+		creature.fov = new FovMap(dungeon);
+	}
 }
 
 function addItem(dungeon, tile, item) {

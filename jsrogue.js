@@ -134,6 +134,9 @@ function moveCreature(floor, fromTile, xMove, yMove) {
 	fromTile.creature = null;
 	toTile.creature.x = toTile.x;
 	toTile.creature.y = toTile.y;
+	if (toTile.creature	 === Game.player) {
+		toTile.creature.fov.update(Game.player);
+	}
 	return;
 }
 
@@ -196,10 +199,11 @@ window.onload = function() {
 	Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
 	Game.player = new Creature("player");
 	populateDungeon();
+	Game.player.fov.update(Game.player);
 	if (getQueryParams(document.location.search).lang == "japanese") {
 		MessageStrings.toggleLanguage();
 	}
 	Game.draw();
+	document.addEventListener("keydown", Game.run);
+	document.addEventListener("keyrepeat", Game.run);
 }
-document.addEventListener("keydown", Game.run);
-document.addEventListener("keyrepeat", Game.run);

@@ -4,6 +4,7 @@ $light: #F0F0FE;
 $boxbg: #0579B1;
 $deadred: #FC4D65;
 $padding: 10px;
+$dull: #505050;
 
 html {
 	background-color: $bg;
@@ -66,6 +67,10 @@ span.oaken_heart {
 
 span.playerdmg {
 	color: $deadred;
+}
+
+span.remembered {
+	color: $dull;
 }
 
 span#playerdeath {
