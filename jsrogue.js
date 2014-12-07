@@ -162,9 +162,13 @@ Game.input = function(event) {
 	}
 	var px = Game.player.x, py = Game.player.y;
 	switch (event.keyCode) {
+	case 37:
 	case 72: Game.player.actions.push(new Action("move", px, py, px - 1, py)); break;      // h
+	case 40:
 	case 74: Game.player.actions.push(new Action("move", px, py, px, py + 1)); break;      // j
+	case 38:
 	case 75: Game.player.actions.push(new Action("move", px, py, px, py - 1)); break;      // k
+	case 39:
 	case 76: Game.player.actions.push(new Action("move", px, py, px + 1, py)); break;      // l
 	case 89: Game.player.actions.push(new Action("move", px, py, px - 1, py - 1)); break;  // y
 	case 85: Game.player.actions.push(new Action("move", px, py, px + 1, py - 1)); break;  // u
