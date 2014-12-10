@@ -165,31 +165,28 @@ Game.input = function(event) {
 	}
 	var px = Game.player.x, py = Game.player.y;
 	switch (event.keyCode) {
-	case 37:
+	case 37:																				   // Left arrow
 	case 72: Game.player.actions.push(new Action("move", px, py, px - 1, py)); break;      // h
-	case 40:
+	case 40:                                                                               // Down arrow
 	case 74: Game.player.actions.push(new Action("move", px, py, px, py + 1)); break;      // j
-	case 38:
+	case 38:                                                                               // Up arrow
 	case 75: Game.player.actions.push(new Action("move", px, py, px, py - 1)); break;      // k
-	case 39:
+	case 39:                                                                               // Right arrow
 	case 76: Game.player.actions.push(new Action("move", px, py, px + 1, py)); break;      // l
 	case 89: Game.player.actions.push(new Action("move", px, py, px - 1, py - 1)); break;  // y
 	case 85: Game.player.actions.push(new Action("move", px, py, px + 1, py - 1)); break;  // u
 	case 66: Game.player.actions.push(new Action("move", px, py, px - 1, py + 1)); break;  // b
 	case 78: Game.player.actions.push(new Action("move", px, py, px + 1, py + 1)); break;  // n
-	case 71: Game.player.actions.push(new Action("doground", px, py)); break;                      // g
-	case 190:  // .
+	case 188:                                                                              // ,
+	case 71: Game.player.actions.push(new Action("doground", px, py)); break;              // g
+	case 190:                                                                              // .
 		if (event.shiftKey) {
 			Game.player.actions.push(new Action("doground", px, py));
 		} else {
 			Game.player.actions.push(new Action("wait"));
 		}
 		break;
-	case 188:  // ,
-		if (event.shiftKey) {
-			Game.player.actions.push(new Action("doground", px, py));
-		}
-		break;
+	
 	default:
 		return;
 	}
