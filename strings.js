@@ -24,6 +24,10 @@ var MSG_OAKEN_HEART = 21;
 var MSG_A_IS_HERE = 22;  // Inanimate.
 var MSG_A_PICKS_UP_B = 23;
 var MSG_EMPTY = 24;
+var MSG_CHOOSE_ITEM = 25;
+var MSG_LETTER_PLEASE = 26;
+var MSG_NO_ITEM = 27;
+var MSG_CANNOT_USE = 28;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -127,6 +131,10 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_A_IS_HERE: return (l == e) ? (cap(an(this.get(a))) + " is here.") : this.get(a) + "がここにある。";
 	case MSG_A_PICKS_UP_B: return (l == e) ? cap(this.get(a)) + " " + verb("pick") + " up " + an(this.get(b)) + "." : this.get(a) + "は" + this.get(b) + "を拾う。";
 	case MSG_EMPTY: return (l == e) ? "The inventory is empty." : "インベントリが空だよ。";
+	case MSG_CHOOSE_ITEM: return (l === e) ? "Choose an item: " : "アイテムを選んでください：　";
+	case MSG_LETTER_PLEASE: return (l === e) ? "Please enter a letter." : "英文字を入力してください。";
+	case MSG_NO_ITEM: return (l === e) ? "No item with that letter." : "その文字はアイテムが無い。";
+	case MSG_CANNOT_USE: return (l === e) ? "Cannot use that." : "使わない。";
 	}
 }
 

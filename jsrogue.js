@@ -45,7 +45,8 @@ Game.doAction = function(action) {
 			while (tile.items.length > 0) {
 				creature.inventory.push(tile.items.pop());
 				if (Game.player.canSee(creature)) {
-					Log.add(function() { return MessageStrings.get(MSG_A_PICKS_UP_B, creature.name, creature.inventory[creature.inventory.length - 1].name)});
+					function msgfunc(iname) { return function() { return MessageStrings.get(MSG_A_PICKS_UP_B, creature.name, iname)} }
+					Log.add(msgfunc(creature.inventory[creature.inventory.length - 1].name));
 				}
 			}
 		} else if (tile.id === "stairsup") {
@@ -60,11 +61,33 @@ Game.doAction = function(action) {
 			Log.add(MSG_FAIL_DOGROUND);
 		}
 		break;
+	case "use":
+		var tile = this.dungeon.tileAt(action.a, action.b);
+		var creature = tile.creature;
+		if (creature === null) {
+			throw new Error("doAction: use empty tile");
+		}
+		if (creature !== Game.player) {
+			throw new Error("doAction: don't give AI creatures use actions, just set creature.itemToUse.");
+		}
+		if (creature.inventory.length === 0) {
+			Log.add(MSG_EMPTY);
+			break;
+		}
+		Log.add(MSG_CHOOSE_ITEM);
+		creature.waitingForItemChoice = true;
+		break;
 	case "wait":
 		break;
 	default:
 		throw new Error("Game.doAction(): unknown id: " + action.id);
 	}
+}
+
+// For debugging purposes.
+function spawnItem(id) {
+	var tile = Game.dungeon.tileAt(Game.player.x, Game.player.y);
+	tile.items.push(new Item(id));
 }
 
 Game.update = function() {
@@ -80,7 +103,16 @@ Game.update = function() {
 		if (typeof c.ai === "function") {
 			c.ai();
 		}
-		if (c.actions.length > 0) {
+		if (c.itemToUse !== undefined && c.itemToUse !== null) {
+			remove = c.itemToUse.use(c);
+			if (remove) for (var i = 0, len = c.inventory.length; i < len; ++i) {
+				if (c.itemToUse === c.inventory[i]) {
+					c.inventory.splice(i, 1);
+					break;
+				}
+			}
+			c.itemToUse = null;
+		} else if (c.actions.length > 0) {
 			this.doAction(c.actions[0]);
 			c.actions = c.actions.slice(1);
 		}
@@ -160,6 +192,21 @@ function attackCreature(attacker, defender) {
 }
 
 Game.input = function(event) {
+	if (Game.player.waitingForItemChoice) {
+		Game.player.waitingForItemChoice = false;
+		var kc = event.keyCode;
+		if (kc < 65 || kc > 90) {
+			Log.add(MSG_LETTER_PLEASE);
+			return;
+		}
+		var i = kc - 65;
+		if (i >= Game.player.inventory.length) {
+			Log.add(MSG_NO_ITEM);
+			return;
+		}
+		Game.player.itemToUse = Game.player.inventory[i];
+		return;
+	}
 	if (Game.player.actions.length > 0 || event.altKey || event.metaKey || event.ctrlKey) {
 		return;
 	}
@@ -179,6 +226,7 @@ Game.input = function(event) {
 	case 78: Game.player.actions.push(new Action("move", px, py, px + 1, py + 1)); break;  // n
 	case 188:                                                                              // ,
 	case 71: Game.player.actions.push(new Action("doground", px, py)); break;              // g
+	case 65: Game.player.actions.push(new Action("use", px, py));                          // a
 	case 190:                                                                              // .
 		if (event.shiftKey) {
 			Game.player.actions.push(new Action("doground", px, py));
@@ -186,7 +234,6 @@ Game.input = function(event) {
 			Game.player.actions.push(new Action("wait"));
 		}
 		break;
-	
 	default:
 		return;
 	}

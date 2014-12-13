@@ -89,6 +89,9 @@ function Creature(id) {
 	this.str = new Dice(attr.initialStrength).roll();
 	this.def = new Dice(attr.initialDefence).roll();
 	switch (id) {
+	case "player":
+		this.waitingForItemChoice = false;
+		break;
 	case "seeker":
 		this.ai = seekAi;
 		this.seenPlayer = false;
