@@ -124,7 +124,7 @@ MessageStrings.get = function(id, a, b) {
 		var dmg = span(b, (a === MSG_YOU) ? "playerdmg" : "enemydmg");
 		return (l == e) ?
 			cap(this.get(a)) + verb("receive") + dmg + " damage." :
-			this.get(a) + "が" + dmg + "ダメージを受ける。";
+			this.get(a) + "が" + dmg + "のダメージを受ける。";
 	case MSG_A_DODGES: return (l == e) ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
 	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + ((l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
 	case MSG_OAKEN_HEART: return (l == e) ? "oaken heart" : "オークの心臓";
