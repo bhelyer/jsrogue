@@ -226,6 +226,7 @@ Game.input = function(event) {
 	case 78: Game.player.actions.push(new Action("move", px, py, px + 1, py + 1)); break;  // n
 	case 188:                                                                              // ,
 	case 71: Game.player.actions.push(new Action("doground", px, py)); break;              // g
+	case 73:                                                                               // i
 	case 65: Game.player.actions.push(new Action("use", px, py));                          // a
 	case 190:                                                                              // .
 		if (event.shiftKey) {
