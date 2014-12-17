@@ -77,12 +77,22 @@ function creatureDie() {
 	}
 }
 
+function creatureHasItem(id) {
+	for (var i = 0, len = this.inventory.length; i < len; ++i) {
+		if (this.inventory[i].id === id) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function Creature(id) {
 	this.id = id;
 	this.actions = new Array();
 	this.inventory = new Array();
 	this.canSee = creatureCanSee;
 	this.dieIfNeeded = creatureDie;
+	this.hasItem = creatureHasItem;
 	var attr = CreatureAttrs[id];
 	this.name = attr.name;
 	this.hp = this.maxHp = new Dice(attr.initialMaxHP).roll();

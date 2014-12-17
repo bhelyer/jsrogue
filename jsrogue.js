@@ -49,6 +49,10 @@ Game.doAction = function(action) {
 					Log.add(msgfunc(creature.inventory[creature.inventory.length - 1].name));
 				}
 			}
+			if (Game.player.hasItem("oaken_heart")) {
+				Log.add(MSG_WIN);
+				Game.over = true;
+			}
 		} else if (tile.id === "stairsup") {
 			Game.floor++;
 			Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);

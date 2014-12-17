@@ -190,9 +190,11 @@ function simpleDungeonGenerator() {
 
 	var t = this.getEmptyTile();
 	t.id = "stairsup";
-	
-	var heartTile = this.getEmptyTile();
-	addItem(this, heartTile, new Item("oaken_heart"));
+
+	if (Game.floor >= 24) {
+		var heartTile = this.getEmptyTile();
+		addItem(this, heartTile, new Item("oaken_heart"));
+	}
 }
 
 function dungeonDraw() {
