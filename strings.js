@@ -28,6 +28,7 @@ var MSG_CHOOSE_ITEM = 25;
 var MSG_LETTER_PLEASE = 26;
 var MSG_NO_ITEM = 27;
 var MSG_CANNOT_USE = 28;
+var MSG_WIN = 29;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -73,6 +74,7 @@ MessageStrings.toggleLanguage = function() {
 	} else {
 		this.language = MessageLanguage.ENGLISH;
 	}
+	Game.draw();
 }
 
 MessageStrings.drawOptions = function() {
@@ -135,6 +137,7 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_LETTER_PLEASE: return (l === e) ? "Please enter a letter." : "英文字を入力してください。";
 	case MSG_NO_ITEM: return (l === e) ? "No item with that letter." : "その文字はアイテムが無い。";
 	case MSG_CANNOT_USE: return (l === e) ? "Cannot use that." : "使わない。";
+	case MSG_WIN: return (l === e) ? "Victory!" : "勝ち！"
 	}
 }
 
