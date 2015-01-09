@@ -191,6 +191,13 @@ function simpleDungeonGenerator() {
 	var t = this.getEmptyTile();
 	t.id = "stairsup";
 
+	var itemsToAdd = getRandomInt(0, 3);
+	while (itemsToAdd > 0) {
+		itemsToAdd--;
+		var itemTile = this.getEmptyTile();
+		addItem(this, itemTile, new Item("potion"));
+	}
+
 	if (Game.floor >= 24) {
 		var heartTile = this.getEmptyTile();
 		addItem(this, heartTile, new Item("oaken_heart"));
