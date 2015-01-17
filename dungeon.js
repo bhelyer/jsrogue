@@ -229,26 +229,29 @@ function dungeonDraw() {
 				if (cname.length === 0) {
 					cname = tile.creature.id;
 				}
+				var c = CreatureAttrs[tile.creature.id].c;
 				if (lastname === "" || lastname != cname) {
-					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
+					s += "</span><span class=\"" + cname + "\" onclick=\"onTileClick('" + c + "'); return false;\">";
 				}
-				s += CreatureAttrs[tile.creature.id].c;
+				s += c;
 			} else if (tile.items.length > 0) {
 				if (cname.length === 0) {
 					cname = tile.items[tile.items.length - 1].id;
 				}
+				var c = ItemAttrs[tile.items[tile.items.length - 1].id].c;
 				if (lastname === "" || lastname != cname) {
-					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
+					s += "</span><span class=\"" + cname + "\" onclick=\"onTileClick('" + c + "'); return false;\">";
 				}
-				s += ItemAttrs[tile.items[tile.items.length - 1].id].c;
+				s += c;
 			} else {
 				if (cname.length === 0) {
 					cname = tile.id;
 				}
+				var c = TileAttrs[tile.id].c;
 				if (lastname === "" || lastname != cname) {
-					s += "</span><span class=\"" + cname + "\" onmouseover=\"onMouseOver('" + cname + "'); return false;\">";
+					s += "</span><span class=\"" + cname + "\" onclick=\"onTileClick('" + c + "'); return false;\">";
 				}
-				s += TileAttrs[tile.id].c;
+				s += c;
 			}
 			lastname = cname;
 		}

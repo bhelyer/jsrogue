@@ -51,6 +51,10 @@ a {
 	margin-bottom: $padding;
 }
 
+span.player, span.seeker {
+	cursor: pointer;
+}
+
 span.mostrecentlog, .player, span.seeker, span.stairsup, span.unit, span.inventoryitem {
 	color: white;
 	font-weight: bold;

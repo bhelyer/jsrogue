@@ -13,14 +13,15 @@ function populateDungeon() {
 	}
 }
 
-function onMouseOver(id) {
-	switch (id) {
-	case "wall":
-	case "floor": Game.info = MSG_INTRO; break;
-	case "player": Game.info = MSG_PLAYERDESC; break;
-	case "seeker": Game.info = MSG_SEEKERDESC; break;
+function onTileClick(c) {
+	switch (c) {
+	case "#":
+	case ".": Game.info = MSG_INTRO; break;
+	case "@": Game.info = MSG_PLAYERDESC; break;
+	case "s": Game.info = MSG_SEEKERDESC; break;
 	default: break;
 	}
+	Game.draw();
 }
 
 Game.doAction = function(action) {

@@ -47,14 +47,16 @@ var E_INTRO =
 from the Seekers' long dead language. \
 A better translation, they say, would be 'Tower to the Endless'. \
 </p><p>\
-Nevertheless, no one has ever reached the top.</p>\
+Nevertheless, no one has ever reached the top.</p><p>\
+Click on things to look at them.</p>\
 ";
 var J_INTRO =
 "\
 <p>「シーカーの古い死語から『エンドレスなタワー』は雑な翻訳だよ」と学者が早く言います。\
 より良い翻訳は、「終焉へのタワー」だというのです。\
 </p><p>\
-しかし、誰一人タワーの頂上に到達した者はいません。</p>\
+しかし、誰一人タワーの頂上に到達した者はいません。</p><p>\
+物を見ると、クリックしてください。</p>\
 ";
 
 var E_SEEKER =
