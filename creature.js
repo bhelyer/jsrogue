@@ -1,6 +1,6 @@
 var CreatureAttrs = {
-	player: { c:"@", name:MSG_YOU, sightRange:5, initialMaxHP:"3d10+2", initialStrength:"2d5+2", initialDefence:"d6" },
-	seeker: { c:"s", name:MSG_SEEKER, sightRange:7, initialMaxHP:"2d6+2",  initialStrength:"d6+1", initialDefence:"d4" }
+	player: { c:"@", name:MSG_YOU, sightRange:10, initialMaxHP:"20", initialStrength:"5", initialDefence:"3" },
+	seeker: { c:"s", name:MSG_SEEKER, sightRange:7, initialMaxHP:"8",  initialStrength:"3", initialDefence:"2" }
 }
 
 function seekAi() {
