@@ -1,5 +1,5 @@
 var CreatureAttrs = {
-	player: { c:"@", name:MSG_YOU, sightRange:10, initialMaxHP:"20", initialStrength:"5", initialDefence:"3" },
+	player: { c:"@", name:MSG_YOU, sightRange:25, initialMaxHP:"20", initialStrength:"5", initialDefence:"3" },
 	seeker: { c:"s", name:MSG_SEEKER, sightRange:7, initialMaxHP:"8",  initialStrength:"3", initialDefence:"2" }
 }
 
