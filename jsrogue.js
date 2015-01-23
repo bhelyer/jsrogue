@@ -131,7 +131,7 @@ function drawInventory() {
 	var s = new String();
 	for (var i = 0, len = Game.player.inventory.length; i < len; ++i) {
 		var item = Game.player.inventory[i];
-		s += "<span class=\"inventoryitem\">" + String.fromCharCode("A".charCodeAt(0) + i) + "</span>: " + MessageStrings.get(item.name) + "<br>"
+		s += "<span class=\"inventoryitem\">" + String.fromCharCode("A".charCodeAt(0) + i) + "</span>: " + MessageStrings.get(ItemAttrs[item.id].name) + "<br>"
 	}
 	return s;
 }
@@ -253,6 +253,7 @@ Game.run = function(event) {
 }
 
 window.onload = function() {
+	initItems();
 	Game.dungeon = new DungeonFloor(80, 25, simpleDungeonGenerator);
 	Game.player = new Creature("player");
 	populateDungeon();

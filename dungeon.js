@@ -191,11 +191,11 @@ function simpleDungeonGenerator() {
 	var t = this.getEmptyTile();
 	t.id = "stairsup";
 
-	var itemsToAdd = getRandomInt(0, 3);
+	var itemsToAdd = getRandomInt(0, 20);
 	while (itemsToAdd > 0) {
 		itemsToAdd--;
 		var itemTile = this.getEmptyTile();
-		addItem(this, itemTile, new Item("potion"));
+		addItem(this, itemTile, new Item(randomPotion()));
 	}
 
 	if (Game.floor >= 24) {
@@ -236,7 +236,7 @@ function dungeonDraw() {
 				s += c;
 			} else if (tile.items.length > 0) {
 				if (cname.length === 0) {
-					cname = tile.items[tile.items.length - 1].id;
+					cname = tile.items[tile.items.length - 1].cname;
 				}
 				var c = ItemAttrs[tile.items[tile.items.length - 1].id].c;
 				if (lastname === "" || lastname != cname) {

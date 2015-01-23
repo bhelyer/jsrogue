@@ -29,8 +29,14 @@ var MSG_LETTER_PLEASE = 26;
 var MSG_NO_ITEM = 27;
 var MSG_CANNOT_USE = 28;
 var MSG_WIN = 29;
-var MSG_POTION = 30;
-var MSG_GULP = 31;
+var MSG_GULP = 30;
+var MSG_GREEN_POTION = 31;
+var MSG_RED_POTION = 32;
+var MSG_BLUE_POTION = 33;
+var MSG_PURPLE_POTION = 34;
+var MSG_YELLOW_POTION = 35;
+var MSG_HEALING_POTION = 36;
+var MSG_POISON_POTION = 37;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -142,8 +148,14 @@ MessageStrings.get = function(id, a, b) {
 	case MSG_NO_ITEM: return (l === e) ? "No item with that letter." : "その文字はアイテムが無い。";
 	case MSG_CANNOT_USE: return (l === e) ? "Cannot use that." : "使わない。";
 	case MSG_WIN: return (l === e) ? "Victory!" : "勝ち！";
-	case MSG_POTION: return (l === e) ? "potion" : "ポーション";
 	case MSG_GULP: return (l === e) ? "Gulp!" : "ごくごく！";
+	case MSG_GREEN_POTION: return (l === e) ? "green potion" : "緑のポーション";
+	case MSG_RED_POTION: return (l === e) ? "red potion" : "赤いポーション";
+	case MSG_BLUE_POTION: return (l === e) ? "blue potion" : "青いポーション";
+	case MSG_PURPLE_POTION: return (l === e) ? "purple potion" : "紫のポーション";
+	case MSG_YELLOW_POTION: return (l === e) ? "yellow potion" : "黄色いポーション";
+	case MSG_HEALING_POTION: return (l === e) ? "healing potion" : "薬";
+	case MSG_POISON_POTION: return (l === e) ? "poison potion" : "毒";
 	}
 }
 
