@@ -112,7 +112,8 @@ MessageStrings.get = function(id, a, b) {
 		return " " + s + (a === MSG_YOU ? ch : "s" + ch);
 	}
 	function an(s) {
-		if (s[0] === "a" || s[0] === "e" || s[0] === "i" || s[0] === "o" || s[0] == "u") {
+		if (s[0] === "a" || s[0] === "e" || s[0] === "i" || s[0] === "o" || s[0] == "u" ||
+			s.slice(0, 3) === "hp") {
 			return "an " + s;
 		} else {
 			return "a " + s;

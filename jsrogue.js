@@ -112,7 +112,7 @@ function spawnItem(id) {
 }
 
 Game.update = function() {
-	if (Game.player.actions.length == 0 || Game.over) {
+	if (Game.over) {
 		return;
 	}
 	for (var i = 0; i < Game.dungeon.creatures.length; i++) {
@@ -296,7 +296,7 @@ window.onload = function() {
 	Game.player = new Creature("player");
 	populateDungeon();
 	Game.player.fov.update(Game.player);
-	if (getQueryParams(document.location.search).lang == "japanese") {
+	if (getQueryParams(document.location.search).lang === "japanese") {
 		MessageStrings.toggleLanguage();
 	}
 	Game.draw();
