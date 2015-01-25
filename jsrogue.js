@@ -80,7 +80,23 @@ Game.doAction = function(action) {
 			break;
 		}
 		Log.add(MSG_CHOOSE_ITEM);
-		creature.waitingForItemChoice = true;
+		creature.waitingForItemChoice = "use";
+		break;
+	case "drop":
+		var tile = this.dungeon.tileAt(action.a, action.b);
+		var creature = tile.creature;
+		if (creature === null) {
+			throw new Error("doAction: empty tile");
+		}
+		if (creature !== Game.player) {
+			throw new Error("doAction: just use creature.itemToDrop for AI.");
+		}
+		if (creature.inventory.length === 0) {
+			Log.add(MSG_EMPTY);
+			break;
+		}
+		Log.add(MSG_CHOOSE_ITEM);
+		creature.waitingForItemChoice = "drop";
 		break;
 	case "wait":
 		break;
@@ -117,6 +133,20 @@ Game.update = function() {
 				}
 			}
 			c.itemToUse = null;
+			Game.draw();
+			Game.update();
+		} else if (c.itemToDrop !== undefined && c.itemToDrop !== null) {
+			var tile = Game.dungeon.tileAt(c.x, c.y);
+			for (var i = 0, len = c.inventory.length; i < len; ++i) {
+				if (c.itemToDrop === c.inventory[i]) {
+					c.inventory.splice(i, 1);
+					tile.items.push(c.itemToDrop);
+					break;
+				}
+			}
+			c.itemToDrop = null;
+			Game.draw();
+			Game.update();
 		} else if (c.actions.length > 0) {
 			this.doAction(c.actions[0]);
 			c.actions = c.actions.slice(1);
@@ -197,7 +227,8 @@ function attackCreature(attacker, defender) {
 }
 
 Game.input = function(event) {
-	if (Game.player.waitingForItemChoice) {
+	if (Game.player.waitingForItemChoice != false) {
+		var type = Game.player.waitingForItemChoice;
 		Game.player.waitingForItemChoice = false;
 		var kc = event.keyCode;
 		if (kc < 65 || kc > 90) {
@@ -209,7 +240,13 @@ Game.input = function(event) {
 			Log.add(MSG_NO_ITEM);
 			return;
 		}
-		Game.player.itemToUse = Game.player.inventory[i];
+		if (type === "use") {
+			Game.player.itemToUse = Game.player.inventory[i];
+		} else if (type === "drop") {
+			Game.player.itemToDrop = Game.player.inventory[i];
+		} else {
+			throw new Error("Game.input");
+		}
 		return;
 	}
 	if (Game.player.actions.length > 0 || event.altKey || event.metaKey || event.ctrlKey) {
@@ -232,7 +269,8 @@ Game.input = function(event) {
 	case 188:                                                                              // ,
 	case 71: Game.player.actions.push(new Action("doground", px, py)); break;              // g
 	case 73:                                                                               // i
-	case 65: Game.player.actions.push(new Action("use", px, py));                          // a
+	case 65: Game.player.actions.push(new Action("use", px, py)); break;                   // a
+	case 68: Game.player.actions.push(new Action("drop", px, py)); break;                  // d
 	case 190:                                                                              // .
 		if (event.shiftKey) {
 			Game.player.actions.push(new Action("doground", px, py));

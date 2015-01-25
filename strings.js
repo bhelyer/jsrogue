@@ -35,8 +35,19 @@ var MSG_RED_POTION = 32;
 var MSG_BLUE_POTION = 33;
 var MSG_PURPLE_POTION = 34;
 var MSG_YELLOW_POTION = 35;
-var MSG_HEALING_POTION = 36;
-var MSG_POISON_POTION = 37;
+var MSG_ORANGE_POTION = 36;
+var MSG_PINK_POTION = 37;
+var MSG_WHITE_POTION = 38;
+var MSG_BLACK_POTION = 39;
+var MSG_BROWN_POTION = 40;
+var MSG_HEALING_POTION = 46;
+var MSG_POISON_POTION = 47;
+var MSG_STR_BOOST_POTION = 48;
+var MSG_DEF_BOOST_POTION = 49;
+var MSG_HP_BOOST_POTION = 50;
+var MSG_STR_ABUSE_POTION = 51;
+var MSG_DEF_ABUSE_POTION = 52;
+var MSG_HP_ABUSE_POTION = 53;
 
 var MessageLanguage = {
 	ENGLISH:0,
@@ -93,9 +104,7 @@ MessageStrings.drawOptions = function() {
 }
 
 MessageStrings.get = function(id, a, b) {
-	var l = this.language;
-	var e = MessageLanguage.ENGLISH;
-	var j = MessageLanguage.JAPANESE;
+	var e = this.language === MessageLanguage.ENGLISH;
 	function verb(s, ch) {
 		if (typeof(ch) === "undefined") {
 			ch = " ";
@@ -114,48 +123,59 @@ MessageStrings.get = function(id, a, b) {
 	}
 	switch (id) {
 	case MSG_NONE: throw new Error("MessageStrings.get: Tried to retrieve MSG_NONE.");
-	case MSG_NO_WALK: return ((l == e) ? "You cannot walk there." : "あなたはそこに歩けない。");
-	case MSG_LANGUAGE: return (l == e) ? "Language" : "言語";
-	case MSG_CURRENTLANGUAGE: return (l == j) ? "日本語" : "English";
-	case MSG_OPPOSITELANGUAGE: return (l == j) ? "English" : "日本語";
-	case MSG_RETURNTOINDEX: return (l == e) ? "Return to index." : "インデックスへ戻る。";
-	case MSG_FAIL_DOGROUND: return (l == e) ? "There's nothing here." : "ここにない。";
-	case MSG_CLIMB: return (l == e) ? "You climb the stairs." : "あなたは階段に上る。"
-	case MSG_INTRO: return (l == e) ? E_INTRO : J_INTRO;
-	case MSG_SEEKERDESC: return (l == e) ? E_SEEKER : J_SEEKER;
-	case MSG_PLAYERDESC: return (l == e) ? "Who are you?" : "あなたは誰ですか？";
-	case MSG_A_MOANS: return (l == e) ? cap(this.get(a)) + " moans." : this.get(a) + "が唸る。";
-	case MSG_SEEKER: return (l == e) ? "the Seeker" : "シーカー";
-	case MSG_FLOOR: return (l == e) ? "Floor" : "階段";
-	case MSG_HP: return (l == e) ? "Vitality" : "体力";
-	case MSG_STR: return (l == e) ? "Strength" : "筋力";
-	case MSG_DEF: return (l == e) ? "Defence" : "防御力";
-	case MSG_A_ATTACKS_B: return (l == e) ? cap(this.get(a)) + verb("attack") + this.get(b) + "." : this.get(a) + "が" + this.get(b) + "を攻撃する。"
-	case MSG_YOU: return (l == e) ? "you" : "あなた";
+	case MSG_NO_WALK: return (e ? "You cannot walk there." : "あなたはそこに歩けない。");
+	case MSG_LANGUAGE: return e ? "Language" : "言語";
+	case MSG_CURRENTLANGUAGE: return !e ? "日本語" : "English";
+	case MSG_OPPOSITELANGUAGE: return !e ? "English" : "日本語";
+	case MSG_RETURNTOINDEX: return e ? "Return to index." : "インデックスへ戻る。";
+	case MSG_FAIL_DOGROUND: return e ? "There's nothing here." : "ここにない。";
+	case MSG_CLIMB: return e ? "You climb the stairs." : "あなたは階段に上る。"
+	case MSG_INTRO: return e ? E_INTRO : J_INTRO;
+	case MSG_SEEKERDESC: return e ? E_SEEKER : J_SEEKER;
+	case MSG_PLAYERDESC: return e ? "Who are you?" : "あなたは誰ですか？";
+	case MSG_A_MOANS: return e ? cap(this.get(a)) + " moans." : this.get(a) + "が唸る。";
+	case MSG_SEEKER: return e ? "the Seeker" : "シーカー";
+	case MSG_FLOOR: return e ? "Floor" : "階段";
+	case MSG_HP: return e ? "Vitality" : "体力";
+	case MSG_STR: return e ? "Strength" : "筋力";
+	case MSG_DEF: return e ? "Defence" : "防御力";
+	case MSG_A_ATTACKS_B: return e ? cap(this.get(a)) + verb("attack") + this.get(b) + "." : this.get(a) + "が" + this.get(b) + "を攻撃する。"
+	case MSG_YOU: return e ? "you" : "あなた";
 	case MSG_A_RECEIVES_B_DMG:
 		var dmg = span(b, (a === MSG_YOU) ? "playerdmg" : "enemydmg");
-		return (l == e) ?
+		return e ?
 			cap(this.get(a)) + verb("receive") + dmg + " damage." :
 			this.get(a) + "が" + dmg + "のダメージを受ける。";
-	case MSG_A_DODGES: return (l == e) ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
-	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + ((l == e) ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
-	case MSG_OAKEN_HEART: return (l == e) ? "oaken heart" : "オークの心臓";
-	case MSG_A_IS_HERE: return (l == e) ? (cap(an(this.get(a))) + " is here.") : this.get(a) + "がここにある。";
-	case MSG_A_PICKS_UP_B: return (l == e) ? cap(this.get(a)) + " " + verb("pick") + " up " + an(this.get(b)) + "." : this.get(a) + "は" + this.get(b) + "を拾う。";
-	case MSG_EMPTY: return (l == e) ? "The inventory is empty." : "インベントリが空だよ。";
-	case MSG_CHOOSE_ITEM: return (l === e) ? "Choose an item: " : "アイテムを選んでください：　";
-	case MSG_LETTER_PLEASE: return (l === e) ? "Please enter a letter." : "英文字を入力してください。";
-	case MSG_NO_ITEM: return (l === e) ? "No item with that letter." : "その文字はアイテムが無い。";
-	case MSG_CANNOT_USE: return (l === e) ? "Cannot use that." : "使わない。";
-	case MSG_WIN: return (l === e) ? "Victory!" : "勝ち！";
-	case MSG_GULP: return (l === e) ? "Gulp!" : "ごくごく！";
-	case MSG_GREEN_POTION: return (l === e) ? "green potion" : "緑のポーション";
-	case MSG_RED_POTION: return (l === e) ? "red potion" : "赤いポーション";
-	case MSG_BLUE_POTION: return (l === e) ? "blue potion" : "青いポーション";
-	case MSG_PURPLE_POTION: return (l === e) ? "purple potion" : "紫のポーション";
-	case MSG_YELLOW_POTION: return (l === e) ? "yellow potion" : "黄色いポーション";
-	case MSG_HEALING_POTION: return (l === e) ? "healing potion" : "薬";
-	case MSG_POISON_POTION: return (l === e) ? "poison potion" : "毒";
+	case MSG_A_DODGES: return e ? "But " + this.get(a) + verb("dodge", ".") : "でも、" + this.get(a) + "がかわす。";
+	case MSG_A_DIES: return (a == MSG_YOU ? '<span id="playerdeath">' : '<span>') + (e ? cap(this.get(a)) + verb("die", ".") :　this.get(a) + "が死ぬ。") + "</span>";
+	case MSG_OAKEN_HEART: return e ? "oaken heart" : "オークの心臓";
+	case MSG_A_IS_HERE: return e ? (cap(an(this.get(a))) + " is here.") : this.get(a) + "がここにある。";
+	case MSG_A_PICKS_UP_B: return e ? cap(this.get(a)) + " " + verb("pick") + " up " + an(this.get(b)) + "." : this.get(a) + "は" + this.get(b) + "を拾う。";
+	case MSG_EMPTY: return e ? "The inventory is empty." : "インベントリが空だよ。";
+	case MSG_CHOOSE_ITEM: return e ? "Choose an item: " : "アイテムを選んでください：　";
+	case MSG_LETTER_PLEASE: return e ? "Please enter a letter." : "英文字を入力してください。";
+	case MSG_NO_ITEM: return e ? "No item with that letter." : "その文字はアイテムが無い。";
+	case MSG_CANNOT_USE: return e ? "Cannot use that." : "使わない。";
+	case MSG_WIN: return e ? "Victory!" : "勝ち！";
+	case MSG_GULP: return e ? "Gulp!" : "ごくごく！";
+	case MSG_GREEN_POTION: return e ? "green potion" : "緑のポーション";
+	case MSG_RED_POTION: return e ? "red potion" : "赤いポーション";
+	case MSG_BLUE_POTION: return e ? "blue potion" : "青いポーション";
+	case MSG_PURPLE_POTION: return e ? "purple potion" : "紫のポーション";
+	case MSG_YELLOW_POTION: return e ? "yellow potion" : "黄色いポーション";
+	case MSG_ORANGE_POTION: return e ? "orange potion" : "オレンジのポーション";
+	case MSG_PINK_POTION: return e ? "pink potion" : "ピンクのポーション";
+	case MSG_WHITE_POTION: return e ? "white potion" : "白いポーション";
+	case MSG_BLACK_POTION: return e ? "black potion" : "黒いポーション";
+	case MSG_BROWN_POTION: return e ? "brown potion" : "茶色のポーション";
+	case MSG_HEALING_POTION: return e ? "healing potion" : "治癒のポーション";
+	case MSG_POISON_POTION: return e ? "poison potion" : "毒のポーション";
+	case MSG_STR_BOOST_POTION: return e ? "strength boost potion" : "筋力+のポーション";
+	case MSG_DEF_BOOST_POTION: return e ? "defence boost potion" : "防御力+のポーション";
+	case MSG_HP_BOOST_POTION: return e ? "hp boost potion" : "体力+のポーション";
+	case MSG_STR_ABUSE_POTION: return e ? "strength abuse potion" : "筋力-のポーション";
+	case MSG_DEF_ABUSE_POTION: return e ? "defence abuse potion" : "防御力-のポーション";
+	case MSG_HP_ABUSE_POTION: return e ? "hp abuse potion" : "体力-のポーション";
 	}
 }
 
